@@ -121,13 +121,11 @@ var resurrect={
     if ('true'==event.target.getAttribute('disabled')) {
       return;
     }
-
     return resurrect.clickHandler(
         event,
         event.target.ownerDocument,
         event.target.ownerDocument.location.href);
   },
-
   clickedXul:function(event) {
     resurrect.saveTarget(event.target);
 
@@ -136,118 +134,30 @@ var resurrect={
         window.arguments[0],
         window.arguments[1]);
   },
-
   clickHandler:function(event, contentDoc, rawUrl) {
     resurrect.disableButtons(event.target.ownerDocument);
 
-    // Run the actual code.  After timeout for UI repaint.
+    // Run the actual code. After timeout for UI repaint.
     setTimeout(
         resurrect.selectMirror, 1,
-        event.target.getAttribute('value'),
+        'archive',
         event.target.ownerDocument,
         contentDoc, rawUrl);
   },
 
   selectMirror:function(mirror, ownerDoc, contentDoc, rawUrl) {
-    var gotoUrl=null;
     var encUrl=encodeURIComponent(rawUrl);
+    var gotoUrl='http://wayback.archive.org/web/*/'+rawUrl;
 
-    switch (mirror) {
-    case 'coralcdn':
-      gotoUrl=rawUrl.substring(0, 8)+
-          rawUrl.substring(8).replace(/\//, '.nyud.net/');
-      break;
-    case 'google':
-      gotoUrl='http://www.google.com/search?q=cache:'+encUrl;
-      break;
-    case 'googletext':
-      gotoUrl='http://www.google.com/search?strip=1&q=cache:'+encUrl;
-      break;
-    case 'archive':
-      gotoUrl='http://wayback.archive.org/web/*/'+rawUrl;
-      break;
-    case 'yahoo':
-      var xhr=new XMLHttpRequest();
-      xhr.open('GET',
-          'http://api.search.yahoo.com/WebSearchService/V1/'+
-          'webSearch?appid=firefox-resurrect&query='+encUrl+'&results=1',
-          false);
-      xhr.send(null);
-
-      try {
-        var c=xhr.responseXML.getElementsByTagName('Cache');
-        gotoUrl=c[0].firstChild.textContent;
-      } catch (e ) {
-        gotoUrl='http://search.yahoo.com/search?p='+encUrl;
-      }
-
-      break;
-    case 'bing':
-      var xhr=new XMLHttpRequest();
-      xhr.open('GET',
-          'http://api.search.live.net/xml.aspx'+
-          '?AppId=FD382E93B5ABC456C5E34C238A906CAB1E6F9875'+
-          '&Query=url:'+encUrl+
-          '&Sources=web&Web.Count=1',
-          false);
-      xhr.send(null);
-
-      try {
-        var c=xhr.responseXML.getElementsByTagName('web:CacheUrl');
-        gotoUrl=c[0].textContent;
-      } catch (e) {
-        gotoUrl='http://www.bing.com/search?q=url:'+encUrl;
-      }
-
-      break;
-    case 'gigablast':
-      var siteRegex = new RegExp('://([^/]+)');
-      var apiUrl=[
-          'http://feed.gigablast.com/search',
-          '?q=url:', encUrl,
-          '&site=', (siteRegex.match(rawUrl)[1]),
-          '&n=1&ns=0&raw=9&bq=0&nrt=0'
-          ].join('');
-
-      var xhr=new XMLHttpRequest();
-      xhr.open('GET', apiUrl, false);
-      xhr.send(null);
-
-      try {
-        var docId=xhr.responseXML
-            .getElementsByTagName('docId')[0].textContent;
-        gotoUrl='http://www.gigablast.com/index.php'
-            +'?page=get&ih=1&ibh=1&cas=0&d='
-            +docId;
-      } catch (e) {
-        gotoUrl='http://www.gigablast.com/index.php?q=url:'+encUrl;
-      }
-
-      break;
-    case 'webcitation':
-      gotoUrl='http://webcitation.org/query.php?url='+encUrl;
-      break;
-    default:
-      return false;
-      break;
+    if (ownerDoc.getElementById('targetTab').getAttribute('selected')) {
+      window.opener.openUILinkIn(gotoUrl, 'tab');
+    } else {
+          contentDoc.location.assign(gotoUrl);
     }
 
-    if (gotoUrl) {
-      if (ownerDoc.getElementById('targetTab').getAttribute('selected')) {
-        window.opener.openUILinkIn(gotoUrl, 'tab');
-      } else if (ownerDoc.getElementById('targetWin').getAttribute('selected')) {
-        // the setTimeout keeps focus from returning to the opener
-        setTimeout(function(){
-          window.opener.openNewWindowWith(gotoUrl, null, null);
-        }, 10);
-      } else {
-        contentDoc.location.assign(gotoUrl);
-      }
-
-      if ('chrome://resurrect/content/resurrect-select-mirror.xul'==window.document.location) {
-        // setTimeout avoids errors because the window is gone
-        setTimeout(window.close, 0);
-      }
+    if ('chrome://resurrect/content/resurrect-select-mirror.xul'==window.document.location) {
+      // setTimeout avoids errors because the window is gone
+      setTimeout(window.close, 0);
     }
   }
 };

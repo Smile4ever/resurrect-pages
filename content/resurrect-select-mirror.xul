@@ -9,8 +9,9 @@
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   title="&resurrect.title;"
-  buttons="cancel"
+  buttons=" "
   persist="screenX screenY"
+  ondialogaccept="resurrect.clickedXul(event);"
 >
 
 <script type='application/x-javascript' src='chrome://resurrect/content/resurrect.js'></script>
@@ -21,7 +22,6 @@ window.addEventListener('load', resurrect.loadTarget, false);
 <vbox>
   <groupbox>
     <caption label='&resurrect.this;' />
-
     <radiogroup id='targetGroup'>
       <radio id='targetCurr' label='&resurrect.inCurrTab;' />
       <radio id='targetTab' label='&resurrect.inNewTab;' />
@@ -33,36 +33,8 @@ window.addEventListener('load', resurrect.loadTarget, false);
     <caption label='&resurrect.fromMirror;' />
 
     <xul:button
-      value='coralcdn' label=' &resurrect.coralcdn;'
-      image='chrome://resurrect/skin/cacheicons/coralcdn.png'
-    />
-    <xul:button
-      value='google' label=' &resurrect.google;'
-      image='chrome://resurrect/skin/cacheicons/google.png'
-    />
-    <xul:button
-      value='googletext' label=' &resurrect.google;&resurrect.textonly;'
-      image='chrome://resurrect/skin/cacheicons/google.png'
-    />
-    <xul:button
-      value='yahoo' label=' &resurrect.yahoo;'
-      image='chrome://resurrect/skin/cacheicons/yahoo.png'
-    />
-    <xul:button
       value='archive' label=' &resurrect.archive;'
       image='chrome://resurrect/skin/cacheicons/archive.png'
-    />
-    <xul:button
-      value='bing' label=' &resurrect.bing;'
-      image='chrome://resurrect/skin/cacheicons/bing.png'
-    />
-    <xul:button
-      value='gigablast' label=' &resurrect.gigablast;'
-      image='chrome://resurrect/skin/cacheicons/gigablast.png'
-    />
-    <xul:button
-      value='webcitation' label=' &resurrect.webcitation;'
-      image='chrome://resurrect/skin/cacheicons/webcitation.png'
     />
   </groupbox>
 

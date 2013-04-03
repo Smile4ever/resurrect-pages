@@ -5,7 +5,8 @@
 
 <script type='application/x-javascript'	src='chrome://resurrect/content/resurrect.js'></script>
 <script type='application/x-javascript'>
-window.addEventListener('load', resurrect.onLoad, false);
+<!-- window.addEventListener('load', resurrect.onLoad, false); -->
+window.addEventListener('load', resurrect.onLoad, true);
 </script>
 
 <toolbarpalette id='BrowserToolbarPalette'>
