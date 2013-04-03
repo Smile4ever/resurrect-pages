@@ -8,14 +8,8 @@ Or, the easier route, use this extension.
 
 ## Features 
 
- * Searches through seven page cache/mirrors:
-   * [CoralCDN](http://www.coralcdn.org/)
-   * [Google Cache](http://www.google.com/) (plus text-only version)
-   * [Yahoo! Cache](http://search.yahoo.com/)
+ * Searches through the Internet Archive (page mirror website):
    * [The Internet Archive](http://web.archive.org/)
-   * [MSN Cache](http://search.msn.com/)
-   * [Gigablast Cache](http://www.gigablast.com/)
-   * [WebCite](http://www.webcitation.org/)
 
 Of course, not every page can be in every cache.
 When a page is unavailable, you'll generally see that site's error page.
